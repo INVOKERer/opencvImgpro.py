@@ -1,17 +1,13 @@
-from PIL import Image
 import numpy as np
 import cv2
-import math
-from spectral import *
 
 
 # hsv
-def imgDo(imgOri, outputImg):
-    img_BGR = cv2.imread(r'E:\HE+CAM5\roi1\{a}'.format(a=imgOri))
+def imgDo(img_BGR):
     bgr = np.asarray(img_BGR)
     (m, n) = bgr.shape[:2]
-    b = bgr[..., 0]
-    g = bgr[..., 1]
+    # b = bgr[..., 0]
+    # g = bgr[..., 1]
     r = bgr[..., 2]
     img_hsv = cv2.cvtColor(img_BGR, cv2.COLOR_BGR2HSV)
     for i in range(m):
@@ -32,15 +28,16 @@ def imgDo(imgOri, outputImg):
                 img_hsv[i, j, 2] = img_hsv[i, j, 2]
 
     res = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
-
-    output = r'E:\HE+CAM5\roi1\{b}'.format(b=outputImg)
-    cv2.imwrite(output, res)
+    return res
 
 
 if __name__ == '__main__':
-    imgOr = 'RGBMXT1.jpg'
-    outputWay = 'hsv_mxt.jpg'
-    imgDo(imgOr, outputWay)
+    imgOri = 'RGBMXT1.jpg'
+    outputName = 'hsv_mxt.jpg'
+    img_BGR1 = cv2.imread(r'E:\HE+CAM5\roi1\{a}'.format(a=imgOri))
+    resImg = imgDo(img_BGR1)
+    outputWay = r'E:\HE+CAM5\roi1\{b}'.format(b=outputName)
+    cv2.imwrite(outputWay, resImg)
 
 
 

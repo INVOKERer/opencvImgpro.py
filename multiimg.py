@@ -8,9 +8,7 @@ def imgAnti(inputImg):
     return outputImg
 
 
-def imgMultiJpg(inputImg, imgOri, outputImg):
-    img01 = cv2.imread(r'E:\HE+CAM5\roi1\{a}'.format(a=inputImg))
-    bgr = cv2.imread(r'E:\HE+CAM5\roi1\{b}'.format(b=imgOri))
+def imgMultiJpg(img01, bgr):
     BGR = np.asarray(bgr)
     ret, thresh1 = cv2.threshold(img01, 127, 255, cv2.THRESH_BINARY)
     Img01 = thresh1 / 255
@@ -22,12 +20,15 @@ def imgMultiJpg(inputImg, imgOri, outputImg):
     pro[:, :, 1] = np.multiply(RGB[:, :, 1], Img01)
     pro[:, :, 2] = np.multiply(RGB[:, :, 2], Img01)
     '''
-    output = r'E:\HE+CAM5\roi1\{c}'.format(c=outputImg)
-    cv2.imwrite(output, pro)
+    return pro
 
 
 if __name__ == '__main__':
     imgOr1 = 'roi1_SVM.jpg'
     imgOr2 = 'roi1_RGB.jpg'
-    outputWay = 'hsv_mxt.jpg'
-    imgMultiJpg(imgOr1, imgOr2, outputWay)
+    outputName = 'hsv_mxt.jpg'
+    img011 = cv2.imread(r'E:\HE+CAM5\roi1\{a}'.format(a=imgOr1))
+    bgr1 = cv2.imread(r'E:\HE+CAM5\roi1\{b}'.format(b=imgOr2))
+    proImg = imgMultiJpg(img011, bgr1)
+    output = r'E:\HE+CAM5\roi1\{c}'.format(c=outputName)
+    cv2.imwrite(output, proImg)

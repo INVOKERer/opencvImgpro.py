@@ -1,13 +1,10 @@
-from PIL import Image
 import numpy as np
 import cv2
-import math
-from spectral import *
+import addimg
 
 
 # hsv
-def imgDo(imgOri):
-    img_BGR = cv2.imread(r'E:\HE+CAM5\roi1\{a}'.format(a=imgOri))
+def imgDo(img_BGR):
     bgr = np.asarray(img_BGR)
     (m, n) = bgr.shape[:2]
     # b = bgr[..., 0]
@@ -17,9 +14,9 @@ def imgDo(imgOri):
     for i in range(m):
         for j in range(n):
             if r[i, j] >= 30 and 0 < img_hsv[i, j, 0] <= 32:
-                img_hsv[i, j, 0] = img_hsv[i, j, 0] + 148  # img_hsv[i, j, 0] + 148
+                img_hsv[i, j, 0] = img_hsv[i, j, 0]/10 + 148  # img_hsv[i, j, 0] + 148
                 img_hsv[i, j, 1] = img_hsv[i, j, 1] / 2  # img_hsv[i, j, 1]/2
-                img_hsv[i, j, 2] = img_hsv[i, j, 2] / 2 + 100  # img_hsv[i, j, 2]/2 + 100
+                img_hsv[i, j, 2] = img_hsv[i, j, 2]/5 + 120  # img_hsv[i, j, 2]/2 + 100
 
             elif r[i, j] >= 30 and 170 < img_hsv[i, j, 0] <= 190:
                 img_hsv[i, j, 0] = img_hsv[i, j, 0] - 12
@@ -32,6 +29,8 @@ def imgDo(imgOri):
                 img_hsv[i, j, 2] = img_hsv[i, j, 2]
 
     res = cv2.cvtColor(img_hsv, cv2.COLOR_HSV2BGR)
+    inputImg = cv2.imread(r'E:\HE+CAM5\roi1\{a}'.format(a='rgbMXT2.jpg'))
+    res = addimg.imgAddJpg(inputImg, res)
     imgShow(res)
 
 
@@ -44,7 +43,7 @@ def imgShow(picture):
     def getposHsv(event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
             print("HSV is", img_HSV[y, x])
-            print("Bgr is", res[y, x])
+            # print("Bgr is", res[y, x])
 
     cv2.namedWindow('img', cv2.WINDOW_AUTOSIZE)
     cv2.imshow('img', res)
@@ -53,8 +52,9 @@ def imgShow(picture):
 
 
 if __name__ == '__main__':
-    imgOr = 'RGBMXT1.jpg'
-    imgDo(imgOr)
+    imgOri = 'RGBMXT1.jpg'
+    img_BGR1 = cv2.imread(r'E:\HE+CAM5\roi1\{a}'.format(a=imgOri))
+    imgDo(img_BGR1)
 
 
 
